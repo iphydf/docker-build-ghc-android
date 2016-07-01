@@ -1,4 +1,9 @@
+TAG := iphydf/haskell:8.0.1
+
 fast-scripts: Dockerfile.fast user-scripts/build-all.sh
+
+build: $(shell find . -type f)
+	docker build -t $(TAG) .
 
 Dockerfile.fast: Dockerfile Makefile
 	sed -e '/\$$BEGIN-BUILD-ALL\$$/,/\$$END-BUILD-ALL\$$/d' $< > $@
