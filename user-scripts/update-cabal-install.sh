@@ -10,4 +10,3 @@ CFG=$NDK/.cabal/config
 cat $CFG | sed 's/^\(jobs.*\)$/-- \1/' > $CFG.new
 rm -f $CFG
 mv $CFG.new $CFG
-

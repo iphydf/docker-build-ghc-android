@@ -12,5 +12,3 @@ pushd libidn*
 make $MAKEFLAGS || true
 make install
 popd
-
-

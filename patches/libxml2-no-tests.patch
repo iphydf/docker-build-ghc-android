@@ -1,6 +1,6 @@
---- Makefile.in.orig	2013-09-22 19:05:54.181977000 +0100
-+++ Makefile.in	2013-09-22 19:06:12.293977000 +0100
-@@ -37,14 +37,6 @@
+--- Makefile.in.orig	2016-06-30 12:59:52.046291990 +0200
++++ Makefile.in	2016-06-30 13:00:07.790225809 +0200
+@@ -91,14 +91,6 @@
  POST_UNINSTALL = :
  build_triplet = @build@
  host_triplet = @host@
@@ -10,8 +10,29 @@
 -	testAutomata$(EXEEXT) testRegexp$(EXEEXT) testReader$(EXEEXT) \
 -	testapi$(EXEEXT) testModule$(EXEEXT) runtest$(EXEEXT) \
 -	runsuite$(EXEEXT) testchar$(EXEEXT) testdict$(EXEEXT) \
--	runxmlconf$(EXEEXT) testrecurse$(EXEEXT)
+-	runxmlconf$(EXEEXT) testrecurse$(EXEEXT) testlimits$(EXEEXT)
 -bin_PROGRAMS = xmllint$(EXEEXT) xmlcatalog$(EXEEXT)
  subdir = .
- DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
- 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
+ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+ am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
+--- Makefile.am.orig	2016-06-30 13:29:45.062752850 +0200
++++ Makefile.am	2016-06-30 13:31:15.838370558 +0200
+@@ -10,12 +10,12 @@
+ 
+ AM_CFLAGS = $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
+ 
+-noinst_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
+-                testThreads testC14N testAutomata testRegexp \
+-                testReader testapi testModule runtest runsuite testchar \
+-		testdict runxmlconf testrecurse testlimits
+-
+-bin_PROGRAMS = xmllint xmlcatalog
++#noinst_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
++#                testThreads testC14N testAutomata testRegexp \
++#                testReader testapi testModule runtest runsuite testchar \
++#		testdict runxmlconf testrecurse testlimits
++#
++#bin_PROGRAMS = xmllint xmlcatalog
+ 
+ bin_SCRIPTS=xml2-config
+ 

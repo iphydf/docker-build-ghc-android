@@ -28,9 +28,9 @@ EOF
 
 # Update config.sub and config.guess
 for x in $(find . -name "config.sub") ; do
-    dir=$(dirname $x)
-    cp -v "$CONFIG_SUB_SRC/config.sub" "$dir"
-    cp -v "$CONFIG_SUB_SRC/config.guess" "$dir"
+  dir=$(dirname $x)
+  cp -v "$CONFIG_SUB_SRC/config.sub" "$dir"
+  cp -v "$CONFIG_SUB_SRC/config.guess" "$dir"
 done
 
 # Apply library patches
@@ -44,33 +44,11 @@ perl boot
 ./configure --enable-bootstrap-with-devel-snapshot --prefix="$GHC_PREFIX" --target=$NDK_TARGET \
   --with-ghc=$GHC_STAGE0 --with-gcc=$NDK/bin/$NDK_TARGET-gcc
 
-function check_install_gmp_constants() {
-    GMPDCHDR="libraries/integer-gmp/mkGmpDerivedConstants/dist/GmpDerivedConstants.h"
-    if ! [ -e  "$GMPDCHDR" ] ; then
-        if [ -e "$BASEDIR/patches/gmp-$NDK_DESC-GmpDerivedConstants.h" ] ; then
-            cp -v "$BASEDIR/patches/gmp-$NDK_DESC-GmpDerivedConstants.h" "$GMPDCHDR"
-        else
-            echo \#\#\# Execute the following commands to generate a GmpDerivedConstants.h for your target, then run build again:
-            echo \#\#\# adb push ghc-$NDK_DESC/libraries/integer-gmp/cbits/mkGmpDerivedConstants /data/local
-            echo \#\#\# adb shell /data/local/mkGmpDerivedConstants \> $BASEDIR/patches/gmp-$NDK_DESC-GmpDerivedConstants.h
-            echo \#\#\# adb shell rm /data/local/mkGmpDerivedConstants
-            exit 1
-        fi
-    fi
-}
-
 #
 # The nature of parallel builds that once in a blue moon this directory does not get created
-# before we try to "/usr/bin/install -c -m 644  utils/hsc2hs/template-hsc.h "/home/androidbuilder/.ghc/android-host/lib/ghc-7.8.3"
+# before we try to "/usr/bin/install -c -m 644  utils/hsc2hs/template-hsc.h "/home/androidbuilder/.ghc/android-host/lib/ghc-8.0.1"
 # This causes a conflict.
 #
-/usr/bin/install -c -m 755 -d "$GHC_PREFIX/lib/arm-unknown-linux-androideabi-ghc-7.8.3/include/"
-make $MAKEFLAGS || true # TMP hack, see http://hackage.haskell.org/trac/ghc/ticket/7490
-make $MAKEFLAGS || true # TMP hack, target mkGmpDerivedConstants fails on build host
-# There's a long pause at this point. Just be patient!
-check_install_gmp_constants
-make $MAKEFLAGS || true # TMP hack, tries to execut inplace stage2
-make $MAKEFLAGS || true # TMP hack, one more for luck
+/usr/bin/install -c -m 755 -d "$GHC_PREFIX/lib/arm-unknown-linux-androideabi-ghc-$GHC_RELEASE/include/"
+make $MAKEFLAGS
 make install
-
-

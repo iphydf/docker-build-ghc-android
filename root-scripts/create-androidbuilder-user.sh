@@ -1,3 +1,5 @@
+#!/bin/bash
+
 THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PASSWORD=adb
 USER=androidbuilder
@@ -10,4 +12,3 @@ cat <<EOF | adduser $USER --gecos $USER 2>&1
 $PASSWORD
 $PASSWORD
 EOF
-

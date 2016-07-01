@@ -1,7 +1,7 @@
 #docker-build-ghc-android
 
 This package contains a Dockerfile and associated scripts to build a
-GHC 7.8.3 cross compiler targeting the ARM architecture. Big thanks go out
+GHC 8.0.1 cross compiler targeting the ARM architecture. Big thanks go out
 *neuroctye* for the original build script and *joeyh* for additional changes.
 
 You will see some errors in the standard output, some that even look like they might be fatal.

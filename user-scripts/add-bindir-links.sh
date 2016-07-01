@@ -6,9 +6,9 @@ source $THIS_DIR/set-env-1.sh
 
 # Add target bindir links
 function bindir_link() {
-    [ -e $GHC_PREFIX/$NDK_TARGET/bin/$1 ] || \
-        (echo ln -s $GHC_PREFIX/bin/*-$1 $GHC_PREFIX/$NDK_TARGET/bin/$1 ;\
-        ln -s $GHC_PREFIX/bin/*-$1 $GHC_PREFIX/$NDK_TARGET/bin/$1)
+  [ -e $GHC_PREFIX/$NDK_TARGET/bin/$1 ] || \
+    (echo ln -s $GHC_PREFIX/bin/*-$1 $GHC_PREFIX/$NDK_TARGET/bin/$1; \
+    ln -s $GHC_PREFIX/bin/*-$1 $GHC_PREFIX/$NDK_TARGET/bin/$1)
 }
 bindir_link ghc
 bindir_link ghc-pkg
