@@ -1,0 +1,44 @@
+FROM ubuntu:16.04
+MAINTAINER iphydf@gmail.com
+
+#
+# Install required packages
+#
+RUN apt-get update && apt-get -y install \
+  autoconf \
+  automake \
+  build-essential \
+  c2hs \
+  cabal-install \
+  ca-certificates \
+  curl \
+  ghc \
+  git \
+  llvm-3.7 \
+  pkg-config \
+  python \
+  zlib1g-dev
+WORKDIR /root
+ENV TERM xterm
+
+# Create a new user 'androidbuilder'
+COPY root-scripts/create-androidbuilder-user.sh /root/
+RUN bash -c ./create-androidbuilder-user.sh
+
+# Log-in to the new user
+USER androidbuilder
+
+# Set the working directory
+ENV BASE /home/androidbuilder/ghc-build
+
+# The adding of the patches happens later in the Docker build, just before the
+# patched code is built
+RUN mkdir -p $BASE/patches
+
+COPY patches/* $BASE/patches/
+
+WORKDIR /home/androidbuilder
+
+# Add and run all user scripts.
+COPY user-scripts/README user-scripts/*.sh $BASE/
+RUN user-scripts/build-all.sh
