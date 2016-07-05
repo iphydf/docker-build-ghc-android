@@ -53,4 +53,4 @@ Docker is great because:
 
 ## More information
 
-For more information read my [blog post](http://lambdalog.seanseefried.com/posts/2014-12-12-docker-build-scripts.html).
+For more information read Sean Seefried's [blog post](http://lambdalog.seanseefried.com/posts/2014-12-12-docker-build-scripts.html).
