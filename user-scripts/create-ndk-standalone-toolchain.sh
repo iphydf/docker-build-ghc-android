@@ -9,4 +9,8 @@ echo Preparing the Android NDK toolchain in $NDK
   --platform=$NDK_PLATFORM --install-dir="$NDK"
 
 #TMP hack, fake pthread library for ghc linker
-(cd "$NDK_ADDON_PREFIX/lib" && ln -s libcharset.a libpthread.a)
+pushd "$NDK_ADDON_PREFIX/lib"
+ln -s libcharset.a libpthread.a
+popd
+
+rm -f ${BASH_SOURCE[0]}

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $THIS_DIR/set-env-1.sh
+source $THIS_DIR/set-env.sh
 ####################################################################################################
 
 cd $NDK_ADDON_SRC
@@ -20,6 +20,7 @@ EOF
 # Configure
 perl boot
 ./configure --prefix="$GHC_STAGE0_PREFIX"
+
 #
 # The nature of parallel builds that once in a blue moon this directory does not get created
 # before we try to "/usr/bin/install -c -m 644  utils/hsc2hs/template-hsc.h "/home/androidbuilder/.ghc/android-host/lib/ghc-8.0.1"
@@ -27,5 +28,6 @@ perl boot
 #
 /usr/bin/install -c -m 755 -d "$GHC_STAGE0_PREFIX/lib/ghc-$GHC_RELEASE/include"
 make $MAKEFLAGS
-make $MAKEFLAGS install || true  # first time fails, for unknown reason
 make $MAKEFLAGS install
+
+rm -rf ${BASH_SOURCE[0]} "$GHC_STAGE0_SRC"

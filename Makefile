@@ -1,19 +1,17 @@
 TAG := iphydf/haskell:8.0.1
 
-fast-scripts: Dockerfile.fast user-scripts/build-all.sh
+default: build
 
 build: $(shell find . -type f)
-	docker build -t $(TAG) .
+	chmod 0644 */*
+	chmod 0755 patches/cabal-wrapper */*.sh */*.pl
+	docker build -f Dockerfile -t $(TAG) .
+	docker build -f Dockerfile.hstox -t $(TAG) .
+
+fast-scripts: Dockerfile.fast user-scripts/build-all.sh
 
 Dockerfile.fast: Dockerfile Makefile
-	sed -e '/\$$BEGIN-BUILD-ALL\$$/,/\$$END-BUILD-ALL\$$/d' $< > $@
-	echo 'COPY patches/* $$BASE/patches/' >> $@
-	echo '' >> $@
-	echo 'WORKDIR /home/androidbuilder' >> $@
-	echo '' >> $@
-	echo '# Add and run all user scripts.' >> $@
-	echo 'COPY user-scripts/README user-scripts/*.sh $$BASE/' >> $@
-	echo 'RUN user-scripts/build-all.sh' >> $@
+	sed -e '/\$$BEGIN-BUILD-ALL\$$/,/\$$END-BUILD-ALL\$$/d;s/^#@ *//' $< > $@
 
 user-scripts/build-all.sh: Dockerfile Makefile
 	echo '#!/bin/bash' > $@

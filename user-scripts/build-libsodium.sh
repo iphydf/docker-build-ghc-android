@@ -5,13 +5,13 @@ source $THIS_DIR/set-env.sh
 ####################################################################################################
 
 cd $NDK_ADDON_SRC
-apt-get source gsasl
+apt-get source libsodium
 
-pushd gsasl*
-patch -p1 < $BASEDIR/patches/gsasl-avoid-memxor-conflict.patch
+pushd libsodium*
+autoreconf -i
 ./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared
 make $MAKEFLAGS
 make install
 popd
 
-rm -rf ${BASH_SOURCE[0]} gsasl*
+rm -rf ${BASH_SOURCE[0]} libsodium*

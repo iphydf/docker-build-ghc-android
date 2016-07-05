@@ -1,0 +1,26 @@
+# vim:ft=dockerfile
+FROM iphydf/haskell:8.0.1
+MAINTAINER iphydf@gmail.com
+
+WORKDIR $BASE
+
+COPY user-scripts/build-libsodium.sh $BASE/
+RUN ./build-libsodium.sh
+
+#
+# Install prerequisite haskell packages.
+#
+COPY patches/hs-zlib-* $BASE/patches/
+COPY user-scripts/cabal-install-zlib.sh $BASE/
+RUN ./cabal-install-zlib.sh
+
+COPY user-scripts/cabal-install-setup.sh $BASE/
+RUN ./cabal-install-setup.sh distributive 0.5.0.2 \
+ && ./cabal-install-setup.sh comonad 5
+
+WORKDIR $HOME
+
+RUN git clone --depth=1 https://github.com/TokTok/hstox \
+ && arm-linux-androideabi-cabal install --only-dependencies -f library-only hstox/
+
+RUN arm-linux-androideabi-cabal install -f library-only hstox/

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $THIS_DIR/set-env-1.sh
+source $THIS_DIR/set-env.sh
 ####################################################################################################
 
 cd $NDK_ADDON_SRC
@@ -33,12 +33,6 @@ for x in $(find . -name "config.sub") ; do
   cp -v "$CONFIG_SUB_SRC/config.guess" "$dir"
 done
 
-# Apply library patches
-apply_patches "hsc2hs-*" "$GHC_SRC/utils/hsc2hs"
-apply_patches "haskeline-*" "$GHC_SRC/libraries/haskeline"
-apply_patches "unix-*" "$GHC_SRC/libraries/unix"
-apply_patches "base-*" "$GHC_SRC/libraries/base"
-
 # Configure
 perl boot
 ./configure --enable-bootstrap-with-devel-snapshot --prefix="$GHC_PREFIX" --target=$NDK_TARGET \
@@ -49,6 +43,8 @@ perl boot
 # before we try to "/usr/bin/install -c -m 644  utils/hsc2hs/template-hsc.h "/home/androidbuilder/.ghc/android-host/lib/ghc-8.0.1"
 # This causes a conflict.
 #
-/usr/bin/install -c -m 755 -d "$GHC_PREFIX/lib/arm-unknown-linux-androideabi-ghc-$GHC_RELEASE/include/"
+/usr/bin/install -c -m 755 -d "$GHC_PREFIX/lib/${NDK_ABI}-ghc-${GHC_RELEASE}/include/"
 make $MAKEFLAGS
 make install
+
+rm -rf ${BASH_SOURCE[0]} "$GHC_SRC"

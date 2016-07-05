@@ -22,10 +22,12 @@ NDK_PLATFORM=${NDK_PLATFORM:-android-14}
 if [ "x$1" == "x--x86" ] ; then
   NDK_TOOLCHAIN=${NDK_TOOLCHAIN:-x86-4.8}
   NDK_TARGET=${NDK_TARGET:-i686-linux-android}
+  NDK_ABI=${NDK_ABI:-i686-linux-android}
   ARCH_OPTS=""
 else
   NDK_TOOLCHAIN=${NDK_TOOLCHAIN:-arm-linux-androideabi-4.8}
   NDK_TARGET=${NDK_TARGET:-arm-linux-androideabi}
+  NDK_ABI=${NDK_ABI:-arm-unknown-linux-androideabi}
   ARCH_OPTS="-fllvm"
 fi
 
@@ -105,3 +107,11 @@ GMP_SRC="$NDK_ADDON_SRC/gmp-${GMP_RELEASE}"
 
 GHC_TAR_FILE=ghc-${GHC_RELEASE}-src.tar.xz
 GHC_TAR_PATH="${TARDIR}/${GHC_TAR_FILE}"
+
+if ! [ -e "$CONFIG_SUB_SRC/config.sub" ] ; then
+  CONFIG_SUB_SRC=${CONFIG_SUB_SRC:-$NCURSES_SRC}
+fi
+
+echo "Current build dir size:"
+du -sh $BASE
+set -e
