@@ -6,10 +6,9 @@ build: $(shell find . -type f)
 	chmod 0644 */*
 	chmod 0755 patches/cabal-wrapper */*.sh */*.pl
 	docker build -f Dockerfile -t $(TAG) .
-	docker build -f Dockerfile.hstox -t $(TAG)-hstox .
 
 push: build
-	docker push $(TAG)-hstox
+	docker push $(TAG)
 
 fast-scripts: Dockerfile.fast user-scripts/build-all.sh
 
