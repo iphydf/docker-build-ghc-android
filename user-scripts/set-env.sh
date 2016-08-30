@@ -1,13 +1,17 @@
 #!/bin/bash
 
 #
-# This script is responsible for setting up all the environment variables exactly the way
-# they should be for building GHC. It will be sourced from other build scripts, but not
-# run directly by Docker.
+# This script is responsible for setting up all the environment variables
+# exactly the way they should be for building GHC. It will be sourced from other
+# build scripts, but not run directly by Docker.
 #
 
-[ -e /etc/makepkg.conf ] && source /etc/makepkg.conf
-MAKEFLAGS=${MAKEFLAGS:--j9}
+set -e -u
+
+if [ -e /etc/makepkg.conf ]; then
+  source /etc/makepkg.conf
+fi
+MAKEFLAGS=${MAKEFLAGS:--j12}
 
 # Basic configuration
 GHCHOME=$HOME/.ghc
@@ -18,18 +22,6 @@ cd "$BASEDIR"
 NDK_RELEASE=${NDK_RELEASE:-r9b}
 NDK_MD5=56c0999a2683d6711591843217f943e0
 NDK_PLATFORM=${NDK_PLATFORM:-android-14}
-
-if [ "x$1" == "x--x86" ] ; then
-  NDK_TOOLCHAIN=${NDK_TOOLCHAIN:-x86-4.8}
-  NDK_TARGET=${NDK_TARGET:-i686-linux-android}
-  NDK_ABI=${NDK_ABI:-i686-linux-android}
-  ARCH_OPTS=""
-else
-  NDK_TOOLCHAIN=${NDK_TOOLCHAIN:-arm-linux-androideabi-4.8}
-  NDK_TARGET=${NDK_TARGET:-arm-linux-androideabi}
-  NDK_ABI=${NDK_ABI:-arm-unknown-linux-androideabi}
-  ARCH_OPTS="-fllvm"
-fi
 
 NDK_DESC=$NDK_PLATFORM-$NDK_TOOLCHAIN
 NDK="$GHCHOME/$NDK_PLATFORM/$NDK_TOOLCHAIN"
@@ -114,4 +106,3 @@ fi
 
 echo "Current build dir size:"
 du -sh $BASE
-set -e
