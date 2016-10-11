@@ -13,7 +13,9 @@ Stay strong and wait. It will build to the end. If it doesn't please contact me.
 
 Once you've done that then:
 
-    $ docker build .
+    $ make
+
+This will generate the Dockerfile from Dockerfile.in and configuration options in the Makefile, and then run `docker build`.
 
 # Running
 
